@@ -20,4 +20,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('echo.urls')),
+    url(r'^echo/', include('echo.urls')),
 ]

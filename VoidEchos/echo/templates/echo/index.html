@@ -1,0 +1,6 @@
+<p>Welcome to Void Echos, your message is:</p>
+{{ message }}
+<form action="{% url 'index' %}" method="post">{% csrf_token %}
+<input type="text" name="data" id ="data" />
+<input type="submit" value="submit" />
+</form>

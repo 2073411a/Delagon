@@ -33,6 +33,11 @@ class linked_list:
       new_node = linked_list(node, 0, i)
       node = new_node
     return init_node
+  def append_new(self, data):
+    node = self
+    while node.prev != 0:
+      node = node.prev
+    node.prev = linked_list(0, node, data)
 
 lis = linked_list(0, 0, "Hello")
 
