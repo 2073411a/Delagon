@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.template import RequestContext, loader
 import data
 
 def pop_end():
@@ -12,4 +13,8 @@ def pop_end():
 # Create your views here.
 
 def index(request):
-  return HttpResponse(pop_end().data)
+  template = loader.get_template('echo/index.html')
+  context = RequestContext( request, {
+    'message' : pop_end()
+  })
+  return HttpResponse(template.render(context))
