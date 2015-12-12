@@ -21,6 +21,12 @@ def index(request):
   if request.method == 'POST':
     if request.POST['data'] != "":
       data.lis.append_new(request.POST['data'])
+      st = ""
+      for i in Laia5.response(request.POST['data']):
+        st += i.word + " "
+      context = RequestContext( request, {
+        'message' : st
+      })
     else:
       message = pop_end().data
       data.lis.append_new(message)
@@ -28,6 +34,9 @@ def index(request):
       for i in Laia5.response(message, 5):
         st += i.word + " "
       data.lis.append_new(st)
+      context = RequestContext( request, {
+        'message' : st
+      })
   else:
     message = pop_end().data
     data.lis.append_new(message)
