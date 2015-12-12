@@ -64,19 +64,22 @@ def response(s, wi):
 		chaining = False
 		lastPos = 0
 		for u in i.inp.scentnce.split():
-			if s in i.inp.scentnce:
-				chain += 1
-				if chaining:
-					if type(findPos(s,i.inp.scentnce)) == type(None):
-						break
-					if lastPos + 1 == findPos(s,i.inp.scentnce):
-						chain += 1
-					else:
-						c += chain
-						chaining = False
-				else:
-					chaining = True
-			lastPos = findPos(s,i.inp.scentnce)
+			try:
+			  if s in i.inp.scentnce:
+  				chain += 1
+	  			if chaining:
+		  			if type(findPos(s,i.inp.scentnce)) == type(None):
+			  			break
+				  	if lastPos + 1 == findPos(s,i.inp.scentnce):
+					  	chain += 1
+			  		else:
+				  		c += chain
+					  	chaining = False
+  				else:
+	  				chaining = True
+			  lastPos = findPos(s,i.inp.scentnce)
+			except:
+			        lastPos = 0
 		c += chain
 		w = (0.5*c)/max(1,(1.0*len(i.inp.scentnce.split())))
 		if w >= 0.25:

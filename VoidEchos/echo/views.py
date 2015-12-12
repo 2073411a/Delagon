@@ -11,6 +11,13 @@ def pop_end():
     data.lis = ret
   return ret
 
+def to_ascii(st):
+  ret = ""
+  for i in st:
+    if not ord(i) > 128:
+      ret += i
+  return ret
+
 # Create your views here.
 
 def index(request):
@@ -22,7 +29,8 @@ def index(request):
     if request.POST['data'] != "":
       data.lis.append_new(request.POST['data'])
       st = ""
-      for i in Laia5.response(request.POST['data']):
+      print request.POST['data']
+      for i in Laia5.response(to_ascii(request.POST['data']), 5):
         st += i.word + " "
       context = RequestContext( request, {
         'message' : st
@@ -31,7 +39,8 @@ def index(request):
       message = pop_end().data
       data.lis.append_new(message)
       st = ""
-      for i in Laia5.response(message, 5):
+      print request.POST['data']
+      for i in Laia5.response(to_ascii(message), 5):
         st += i.word + " "
       data.lis.append_new(st)
       context = RequestContext( request, {
@@ -41,8 +50,10 @@ def index(request):
     message = pop_end().data
     data.lis.append_new(message)
     st = ""
-    for i in Laia5.response(message, 5):
+    print message
+    for i in Laia5.response(to_ascii(message), 5):
       st += i.word + " "
     data.lis.append_new(st)
+  Laia5.Save()
   return HttpResponse(template.render(context))
 
