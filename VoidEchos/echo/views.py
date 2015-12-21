@@ -21,7 +21,7 @@ def to_ascii(st):
 
 class threadSave(threading.Thread):
   def run(self):
-    Laia5.save()
+    Laia5.Save()
 
 # Create your views here.
 
@@ -29,7 +29,8 @@ def index(request):
   threadSave().start()
   template = loader.get_template('echo/index.html')
   context = RequestContext( request, {
-    'message' : pop_end().data
+    'message' : pop_end().data,
+    'last' : " "
   })
   if request.method == 'POST':
     if request.POST['data'] != "":
@@ -40,20 +41,28 @@ def index(request):
       for i in resp:
         st += i.word + " "
       context = RequestContext( request, {
-        'message' : st
+        'message' : st,
+        'last' : request.POST['data']
       })
-      #Laia5.memories += [Laia5.memory(,resp 
+      if request.POST['last'] != " ":
+        s1 = Laia5.concept(request.POST['last'], 5 ,5)
+        s2 = Laia5.concept(st, 5 , 5)
+        Laia5.memories += [Laia5.memory(s1,s2)]
     else:
       message = pop_end().data
       data.lis.append_new(message)
       st = ""
-      print request.POST['data']
       for i in Laia5.response(to_ascii(message), 5):
         st += i.word + " "
       data.lis.append_new(st)
       context = RequestContext( request, {
-        'message' : st
+        'message' : st,
+        'last' : " "
       })
+      if request.POST['last'] != " ":
+        s1 = Laia5.concept(request.POST['last'], 5 ,5)
+        s2 = Laia5.concept(st, 5 , 5)
+        Laia5.memories += [memory(s1,s2)]
   else:
     message = pop_end().data
     data.lis.append_new(message)
