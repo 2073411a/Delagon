@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 import data
 import Laia5
+import threading
 
 def pop_end():
   ret = data.lis
@@ -18,9 +19,14 @@ def to_ascii(st):
       ret += i
   return ret
 
+class threadSave(threading.Thread):
+  def run(self):
+    Laia5.save()
+
 # Create your views here.
 
 def index(request):
+  threadSave().start()
   template = loader.get_template('echo/index.html')
   context = RequestContext( request, {
     'message' : pop_end().data
@@ -30,11 +36,13 @@ def index(request):
       data.lis.append_new(request.POST['data'])
       st = ""
       print request.POST['data']
-      for i in Laia5.response(to_ascii(request.POST['data']), 5):
+      resp = Laia5.response(to_ascii(request.POST['data']), 5)
+      for i in resp:
         st += i.word + " "
       context = RequestContext( request, {
         'message' : st
       })
+      #Laia5.memories += [Laia5.memory(,resp 
     else:
       message = pop_end().data
       data.lis.append_new(message)
@@ -54,6 +62,5 @@ def index(request):
     for i in Laia5.response(to_ascii(message), 5):
       st += i.word + " "
     data.lis.append_new(st)
-  Laia5.Save()
   return HttpResponse(template.render(context))
 
